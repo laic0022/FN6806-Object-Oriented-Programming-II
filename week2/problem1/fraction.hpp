@@ -5,13 +5,13 @@ class Fraction {
     int _nom;
     int _denom;
 public:
-    // int get_nom const {
-    //     return _nom;
-    // } // Returns numerator
+    int get_nom() const {
+        return _nom;
+    } // Returns numerator
 
-    // int get_denom const {
-    //     return _denom;
-    // } // Returns denominator
+    int get_denom() const {
+        return _denom;
+    } // Returns denominator
 
     int gcd(int u, int v) {
         if (u < 0) u = -u;
