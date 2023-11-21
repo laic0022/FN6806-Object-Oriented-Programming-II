@@ -11,4 +11,6 @@ int main() {
 
     ls.solve();
     ls.print();
+
+    return 0;
 }

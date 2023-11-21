@@ -9,8 +9,9 @@ double determinant2x2(double a, double b, double c, double d) {
 double determinant3x3(const std::vector<double> &mat) {
     double det = 0;
     det += mat[0] * determinant2x2(mat[4], mat[5], mat[7], mat[8]);
-    det += mat[1] * determinant2x2(mat[3], mat[5], mat[6], mat[8]);
+    det -= mat[1] * determinant2x2(mat[3], mat[5], mat[6], mat[8]);
     det += mat[2] * determinant2x2(mat[3], mat[4], mat[6], mat[7]);
+    return det;
 }
 
 void LinearSystem::print() const {
