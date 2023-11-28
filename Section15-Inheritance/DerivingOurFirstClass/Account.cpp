@@ -1,7 +1,7 @@
 #include<iostream>
 #include"Account.hpp"
 
-Account::Account() {}
+Account::Account() : balance(0), name("An Account") {}
 Account::~Account() {}
 
 void Account::deposit(double amount) {
