@@ -40,6 +40,28 @@ void test_end_values(valarray<double> vals, double expected_mean,
        << "), stdev: " << stdev << " (" << stdev_diff << ")" << endl;
 }
 
+auto gbm_single_path(double S0, double mu, double sigma, double T, double dt, mt19937 &gen) {
+  static normal_distribution<double> nd(0.0, 1.0);
+  const int n_dt = round(T / dt);
+  vector<double> v(n_dt + 1, S0);
+  for (int i = 1; i <= n_dt; ++i) {
+    v[i] = v[i - 1] * (1 + mu * dt + sigma * sqrt(dt) * nd(gen));
+  }
+  return v;
+}
+
+auto gbm_single_path_v2(double S0, double mu, double sigma, double T, double dt, mt19937 &gen) {
+  const int n_dt = round(T / dt);
+  vector<double> v(n_dt + 1, S0);
+  const double drift = 1 + mu * dt;
+  const double diffusion = sigma * sqrt(dt);
+  static normal_distribution<double> nd(0.0, 1.0);
+  transform(v.begin(), prev(v.end(), 1), next(v.begin(), 1), [&gen, &drift, &diffusion](auto v) {
+    return v * (drift + diffusion * nd(gen));
+  });
+  return v;
+}
+
 int main(){
     // gbm
     const double mu = 0.5;
@@ -67,7 +89,7 @@ int main(){
 
     gen.seed(seed);
     for (size_t n = 0; n < paths; n++) {
-        traj.emplace_back(gbm_single_path_demo(S0, mu, sigma, T, dt, gen));
+        traj.emplace_back(gbm_single_path_v2(S0, mu, sigma, T, dt, gen));
         end_values[n] = traj[n].back();
     }
 
