@@ -30,6 +30,16 @@ void write_all(const multipath &V, string fn = "multiRuns.csv") {
   my_file.close();
 }
 
+void test_end_values(valarray<double> vals, double expected_mean,
+                     double expected_stdev) {
+  auto mean = vals.sum() / vals.size();
+  auto stdev = sqrt(pow(vals - mean, 2.0).sum() / vals.size());
+  auto mean_diff = (mean - expected_mean) / expected_mean;
+  auto stdev_diff = (stdev - expected_stdev) / expected_stdev;
+  cout << "[n]: " << vals.size() << " mean: " << mean << " (" << mean_diff
+       << "), stdev: " << stdev << " (" << stdev_diff << ")" << endl;
+}
+
 int main(){
     // gbm
     const double mu = 0.5;
@@ -62,6 +72,7 @@ int main(){
     }
 
     write_all(traj, "gbm_single_path.csv");
+    test_end_values(end_values, expected_mean, expected_stdev);
     return 0;
 }
 
